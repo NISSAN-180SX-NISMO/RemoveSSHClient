@@ -6,6 +6,8 @@
 #define REMOTESSHCLIENT_MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QFileDialog>
+#include "../../Controllers/SSHController/SSHController.h"
 
 
 QT_BEGIN_NAMESPACE
@@ -19,9 +21,18 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
 
     ~MainWindow() override;
+private slots:
+    void on_connectPushButton_clicked();
 
+    void on_disconnectPushButton_clicked();
+
+    void on_browsePushButton_clicked();
+
+    void setPrivateKeyPath(const QString &path);
 private:
     Ui::MainWindow *ui;
+    QFileDialog *fileDialog;
+    SSHController *controller;
 };
 
 

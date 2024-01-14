@@ -8,23 +8,29 @@ set(CMAKE_AUTOUIC ON)
 
 set(CMAKE_PREFIX_PATH "C:/QT/6.4.2/mingw_64/lib/cmake")
 
-find_package(Qt6 COMPONENTS
-        Core
-        Gui
-        Widgets
-        REQUIRED)
+set(libssh_DIR vcpkg/installed/x64-windows/share/libssh/)
+
+find_package(Qt6 COMPONENTS Core Gui Widgets REQUIRED)
+find_package(libssh CONFIG REQUIRED)
+message(STATUS "LIBSSH_INCLUDE_DIRS: ${LIBSSH_INCLUDE_DIRS}")
+message(STATUS "LIBSSH_LIBRARIES: ${LIBSSH_LIBRARIES}")
+
 
 add_executable(RemoteSSHClient main.cpp
         Controllers/SSHController/SSHController.cpp
         Controllers/SSHController/SSHController.h
         View/MainWindow/mainwindow.cpp
         View/MainWindow/mainwindow.h
-        View/MainWindow/mainwindow.ui)
-target_link_libraries(RemoteSSHClient
-        Qt::Core
-        Qt::Gui
-        Qt::Widgets
+        View/MainWindow/mainwindow.ui
+        Model/SSHConnection/SSHConnection.cpp
+        Model/SSHConnection/SSHConnection.h
+        Controllers/SSHController/SSHControllerException.h
 )
+
+target_include_directories(RemoteSSHClient PRIVATE ${LIBSSH_INCLUDE_DIRS})  # Важное изменение
+message(STATUS "LIBSSH_INCLUDE_DIRS: ${LIBSSH_INCLUDE_DIRS}")
+
+target_link_libraries(RemoteSSHClient PRIVATE Qt::Core Qt::Gui Qt::Widgets ssh)  # Важное изменение
 
 if (WIN32 AND NOT DEFINED CMAKE_TOOLCHAIN_FILE)
     set(DEBUG_SUFFIX)
