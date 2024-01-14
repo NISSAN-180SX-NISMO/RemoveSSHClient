@@ -23,16 +23,16 @@ public:
     ~MainWindow() override;
 private slots:
     void on_connectPushButton_clicked();
-
     void on_disconnectPushButton_clicked();
-
     void on_browsePushButton_clicked();
-
     void setPrivateKeyPath(const QString &path);
+    void updateConnectingButtons();
 private:
     Ui::MainWindow *ui;
     QFileDialog *fileDialog;
     SSHController *controller;
+
+    bool formIsFilled();
 };
 
 
